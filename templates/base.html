@@ -1,0 +1,52 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}جمعيتي{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background:#f5f6fa; }
+        .navbar-brand { font-weight: 700; }
+        .stat-card { border:none; border-radius:14px; }
+        .sidebar-link { color:#333; text-decoration:none; }
+    </style>
+</head>
+<body>
+{% if user.is_authenticated %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'dashboard' %}"><i class="bi bi-people-fill"></i> جمعيتي</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">لوحة القيادة</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'member_list' %}">الأعضاء</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/">لوحة الإدارة</a></li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item"><span class="nav-link">مرحباً، {{ user.username }}</span></li>
+                <li class="nav-item">
+                    <form action="{% url 'logout' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button class="btn btn-sm btn-outline-light mt-1" type="submit">خروج</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endif %}
+
+<div class="container">
+    {% bootstrap_messages %}
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

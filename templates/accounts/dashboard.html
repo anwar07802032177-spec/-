@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}لوحة القيادة{% endblock %}
+{% block content %}
+<h3 class="mb-4">لوحة القيادة</h3>
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm text-white bg-primary">
+            <div class="card-body">
+                <h6>إجمالي الأعضاء</h6>
+                <h2>{{ total_members }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm text-white bg-success">
+            <div class="card-body">
+                <h6>الأعضاء النشطون</h6>
+                <h2>{{ active_members }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm text-white bg-warning">
+            <div class="card-body">
+                <h6>اشتراكات غير مدفوعة ({{ current_year }})</h6>
+                <h2>{{ unpaid_subscriptions }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>آخر الأعضاء المسجّلين</span>
+        <a href="{% url 'member_create' %}" class="btn btn-sm btn-primary">إضافة عضو</a>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr><th>رقم العضوية</th><th>الاسم</th><th>الحالة</th><th>تاريخ الانخراط</th></tr>
+            </thead>
+            <tbody>
+                {% for m in latest_members %}
+                <tr>
+                    <td><a href="{% url 'member_detail' m.pk %}">{{ m.membership_number }}</a></td>
+                    <td>{{ m.full_name }}</td>
+                    <td>{{ m.get_status_display }}</td>
+                    <td>{{ m.join_date }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center text-muted py-3">لا يوجد أعضاء بعد</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

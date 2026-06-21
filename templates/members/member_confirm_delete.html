@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}حذف عضو{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4 class="text-danger">تأكيد الحذف</h4>
+        <p>هل أنت متأكد من حذف العضو <strong>{{ member.full_name }}</strong> ({{ member.membership_number }})؟ سيتم حذف كل اشتراكاته أيضاً.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">نعم، احذف</button>
+            <a href="{% url 'member_detail' member.pk %}" class="btn btn-outline-secondary">إلغاء</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}{{ member.full_name }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>{{ member.full_name }}</h3>
+    <div>
+        <a href="{% url 'member_update' member.pk %}" class="btn btn-outline-secondary">تعديل</a>
+        <a href="{% url 'member_list' %}" class="btn btn-outline-dark">رجوع</a>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                {% if member.photo %}
+                <img src="{{ member.photo.url }}" class="rounded-circle mb-2" width="120" height="120" style="object-fit:cover;">
+                {% else %}
+                <i class="bi bi-person-circle" style="font-size:6rem;color:#ccc;"></i>
+                {% endif %}
+                <h5 class="mt-2">{{ member.full_name }}</h5>
+                <p class="text-muted mb-0">{{ member.membership_number }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-borderless mb-0">
+                    <tr><th width="40%">نوع العضوية</th><td>{{ member.get_member_type_display }}</td></tr>
+                    <tr><th>الحالة</th><td>{{ member.get_status_display }}</td></tr>
+                    <tr><th>الهاتف</th><td>{{ member.phone|default:"-" }}</td></tr>
+                    <tr><th>البريد الإلكتروني</th><td>{{ member.email|default:"-" }}</td></tr>
+                    <tr><th>البطاقة الوطنية</th><td>{{ member.national_id|default:"-" }}</td></tr>
+                    <tr><th>العنوان</th><td>{{ member.address|default:"-" }}</td></tr>
+                    <tr><th>تاريخ الانخراط</th><td>{{ member.join_date }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mt-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>الاشتراكات</span>
+        <a href="{% url 'subscription_create' member.pk %}" class="btn btn-sm btn-primary">إضافة اشتراك</a>
+    </div>
+    <table class="table mb-0">
+        <thead class="table-light"><tr><th>السنة</th><th>المبلغ</th><th>الحالة</th><th>تاريخ الدفع</th></tr></thead>
+        <tbody>
+            {% for s in member.subscriptions.all %}
+            <tr>
+                <td>{{ s.year }}</td>
+                <td>{{ s.amount }}</td>
+                <td>{% if s.payment_status == 'paid' %}<span class="badge bg-success">مدفوع</span>{% else %}<span class="badge bg-warning text-dark">غير مدفوع</span>{% endif %}</td>
+                <td>{{ s.payment_date|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="text-center text-muted py-3">لا توجد اشتراكات</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
