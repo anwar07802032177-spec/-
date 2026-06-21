@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # تطبيقات المشروع
     'accounts',
     'members',
+    'finance',
 ]
 
 MIDDLEWARE = [

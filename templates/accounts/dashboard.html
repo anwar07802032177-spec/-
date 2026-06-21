@@ -29,6 +29,33 @@
     </div>
 </div>
 
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm border-success">
+            <div class="card-body">
+                <h6 class="text-success">إجمالي المداخيل</h6>
+                <h3 class="text-success mb-0">{{ total_income }} د.م</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm border-danger">
+            <div class="card-body">
+                <h6 class="text-danger">إجمالي المصاريف</h6>
+                <h3 class="text-danger mb-0">{{ total_expense }} د.م</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm {% if balance >= 0 %}bg-dark{% else %}bg-danger{% endif %} text-white">
+            <div class="card-body">
+                <h6>الرصيد الحالي</h6>
+                <h3 class="mb-0">{{ balance }} د.م</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center">
         <span>آخر الأعضاء المسجّلين</span>

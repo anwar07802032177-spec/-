@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}حذف عملية مالية{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h4 class="text-danger">تأكيد الحذف</h4>
+        <p>هل أنت متأكد من حذف هذه العملية المالية؟<br>
+           <strong>{{ transaction.get_kind_display }}</strong> — {{ transaction.amount }} د.م — {{ transaction.date }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">نعم، احذف</button>
+            <a href="{% url 'transaction_list' %}" class="btn btn-outline-secondary">إلغاء</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

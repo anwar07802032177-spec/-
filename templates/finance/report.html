@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}التقرير المالي{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>التقرير المالي لسنة {{ selected_year }}</h3>
+    <form method="get" class="d-flex gap-2">
+        <select name="year" class="form-select" onchange="this.form.submit()">
+            <option value="{{ selected_year }}">{{ selected_year }}</option>
+            {% for y in years %}
+                {% if y != selected_year %}<option value="{{ y }}">{{ y }}</option>{% endif %}
+            {% endfor %}
+        </select>
+    </form>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm text-white bg-success">
+            <div class="card-body"><h6>إجمالي المداخيل</h6><h3 class="mb-0">{{ total_income }} د.م</h3></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm text-white bg-danger">
+            <div class="card-body"><h6>إجمالي المصاريف</h6><h3 class="mb-0">{{ total_expense }} د.م</h3></div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card shadow-sm text-white {% if balance >= 0 %}bg-dark{% else %}bg-danger{% endif %}">
+            <div class="card-body"><h6>صافي الرصيد</h6><h3 class="mb-0">{{ balance }} د.م</h3></div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">التفصيل حسب الفئة</div>
+    <table class="table mb-0">
+        <thead class="table-light"><tr><th>الفئة</th><th>النوع</th><th>المجموع</th></tr></thead>
+        <tbody>
+            {% for row in by_category %}
+            <tr>
+                <td>{{ row.category__name|default:"بدون فئة" }}</td>
+                <td>
+                    {% if row.kind == 'income' %}<span class="badge bg-success">مدخول</span>
+                    {% else %}<span class="badge bg-danger">مصروف</span>{% endif %}
+                </td>
+                <td class="fw-bold">{{ row.total }} د.م</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" class="text-center text-muted py-4">لا توجد بيانات لهذه السنة</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
